@@ -1,0 +1,4 @@
+{
+    "files": ["app/models.py", "app/config.py", "app/constants.py",
+              "app/mainwindow.ui","main.py","mainwindow.py"]
+}

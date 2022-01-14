@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <form action="/" method="post">
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x">
+        <div class="medium-12 cell">
+          <label>list name for todo
+            {{ form.name }}
+          </label>
+        </div>
+      </div>
+      <div class="input-group-button">
+        <input type="submit" class="button" value="Submit">
+      </div>
+    </div>
+    {% csrf_token %}
+  </form>
+
+  {% if qs.count == 0 %}
+    <h1 class="subheader">Looks like it is empty :(</h1>
+  {% else %}
+    <table>
+      <thead>
+      <tr>
+        <th>List name</th>
+        <th width="150">To trash</th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for q in qs %}
+          <tr>
+              <td>
+                <a href="{% url 'tasks' id=q.id %}"
+                   style="display:block;">
+                  <p class="h4">{{ q.name }}</p>
+                </a>
+              </td>
+            <td>
+              <form action="{% url 'task_list-delete' id=q.id %}" method="get">
+                <div class="input-group-button">
+                  <input type="submit" class="button large expanded alert" value="To trash">
+                </div>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+{% endblock %}

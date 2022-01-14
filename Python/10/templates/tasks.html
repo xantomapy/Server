@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if form.error %}
+  {% endif %}
+  {% if form.errors %}
+  {% endif %}
+  <form action="{% url 'tasks' id=list_id %}" method="post">
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x">
+        <div class="medium-12 cell">
+          <label>Describe your task
+            {{ form.name }}
+          </label>
+        </div>
+      </div>
+      <div class="input-group-button">
+        <input type="submit" class="button" value="Submit">
+      </div>
+    </div>
+    {% csrf_token %}
+  </form>
+
+  <table>
+    <thead>
+    <tr>
+      <th width="100">Done?</th>
+      <th>Do it</th>
+      <th width="150">changed my mind</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for q in qs %}
+      <tr>
+        <td>
+          {% if q.is_done %}
+            <a href="{% url 'task-complete' id=list_id task_id=q.id %}">
+              <img src="https://img.icons8.com/ios/50/000000/checked-checkbox--v2.png"/>
+            </a>
+          {% else %}
+            <a href="{% url 'task-complete' id=list_id task_id=q.id %}">
+              <img src="https://img.icons8.com/ios/50/000000/unchecked-checkbox.png"/>
+            </a>
+          {% endif %}
+        </td>
+        <td>
+          <p class="h4">{{ q.name }}</p>
+        </td>
+        <td>
+          <form action="{% url 'task-delete' id=list_id task_id=q.id %}" method="get">
+            <div class="input-group-button">
+              <input type="submit" class="button large expanded alert" value="To trash">
+            </div>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
